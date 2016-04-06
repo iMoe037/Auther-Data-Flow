@@ -1,6 +1,6 @@
 app.controller('signupCtrl', function($scope, $http, Auth){
-	$scope.currentUser = Auth.currentUser;
 	$scope.newUser = {};
+	$scope.currentUser = Auth.currentUser;
 	$scope.createUser = Auth.createUser;
 
 });

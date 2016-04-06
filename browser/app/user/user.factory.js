@@ -57,5 +57,6 @@ app.factory('User', function ($http, $state, Story) {
 
 
 
+
 	return User;
 });

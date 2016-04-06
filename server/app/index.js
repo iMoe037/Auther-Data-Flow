@@ -69,6 +69,11 @@ app.get('/logout', function(req, res, next){
 
 });
 
+app.get('/auth/me', function(req, res, next){
+    console.log("Got into /auth get request")
+    return User.findOne({_id: req.session.userId})
+})
+
 
 app.use('/api', require('../api/api.router'));
 

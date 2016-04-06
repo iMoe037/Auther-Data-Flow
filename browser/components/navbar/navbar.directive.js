@@ -1,18 +1,43 @@
 'use strict';
 
-app.directive('navbar', function ($state, $location, Auth) {
+app.directive('navbar', function ($state, $location, Auth, $rootScope) {
 	return {
 		restrict: 'E',
 		templateUrl: '/browser/components/navbar/navbar.html',
+		// controller: 'mainCtrl',
 		link: function (scope) {
-			scope.currentUser = Auth.currentUser;
-			scope.logout = Auth.logout
+
+			Auth.fetchCurrentUser().then(function(user){
+				console.log("USER:", user)
+				$rootScope.currentUser = user;
+			});
+
+			scope.currentUser = $rootScope.currentUser
+			scope.logout = Auth.logout;
+			// scope.getCurrentUser = function () {
+			// 	// scope.currentUser = Auth.getCurrentUser();
+			// 	console.log("HELLO")
+			// }
+
+			// scope.getCurrentUser = Auth.getCurrentUser;
+
+			// console.log(scope.currentUser)
 			scope.pathStartsWithStatePath = function (state) {
 				var partial = $state.href(state);
 				var path = $location.path();
 				return path.startsWith(partial);
 			};
-		}
+
+		},
+		// resolve: {
+		// 	currentUser: function (){
+		// 		return $http.get('/auth/me')
+		// 		.then(function(user){
+		// 			$rootScope.currentUser = user;
+		// 		})
+		// 	}
+		// }
+
 	}
 });
 
