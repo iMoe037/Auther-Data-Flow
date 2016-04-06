@@ -38,6 +38,7 @@ app.post('/login', function(req, res, next){
             res.sendStatus(401);
         } else {
             req.session.userId = user._id;
+            res.send(user)
             res.sendStatus(200);
         }
     })
@@ -55,6 +56,7 @@ app.post('/signup', function(req, res, next){
             res.sendStatus(401);
         } else {
             req.session.userId = user._id;
+            res.send(user)
             res.sendStatus(200);
         }
     })
@@ -63,17 +65,34 @@ app.post('/signup', function(req, res, next){
 
 app.get('/logout', function(req, res, next){
 
-	// req.session.userId=null;
+    console.log('app.get/logout')
 	req.session.destroy()
 	console.log("Session:", req.session)
 
 });
 
-app.get('/auth/me', function(req, res, next){
-    console.log("Got into /auth get request")
-    return User.findOne({_id: req.session.userId})
-})
 
+app.get('/auth/me', function(req, res, next){
+
+    console.log("app.get/auth/me")
+    User.findOne({_id: req.session.userId})
+    .exec()
+    .then(function(user){
+        console.log("THE USER:", user)
+        if(user.email) { 
+            res.send(user) 
+        } else {
+            res.status(404)
+        }
+    })
+    .then(null, function(err){
+        console.error(err)
+    })
+
+
+});
+
+// $http.get('/auth/me')
 
 app.use('/api', require('../api/api.router'));
 

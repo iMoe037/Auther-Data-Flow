@@ -8,8 +8,8 @@ app.directive('navbar', function ($state, $location, Auth, $rootScope) {
 		link: function (scope) {
 
 			Auth.fetchCurrentUser().then(function(user){
-				console.log("USER:", user)
-				$rootScope.currentUser = user;
+				console.log("fetched Current User: ", user)
+				$rootScope.currentUser = user.data;
 			});
 
 			scope.currentUser = $rootScope.currentUser

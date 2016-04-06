@@ -6,19 +6,18 @@ app.factory('Auth', function ($http, $state, $rootScope) {
 
 	User.findUser = function (user) {
 		// console.log(user)
-		var newUser = user
 		return $http.post('/login', user)
 		.then(function(user){
-			$rootScope.currentUser = newUser;
+			$rootScope.currentUser = user.data;
 			$state.go('stories');
 		})
 	}
 
 	User.createUser = function (newUser) {
-		var user = newUser
+		console.log("inside User.createUser")
 		return $http.post('/signup', newUser)
 		.then(function(newUser) {
-			$rootScope.currentUser = user;
+			$rootScope.currentUser = newUser.data;
 			$state.go('stories');
 		});
 	};
@@ -31,9 +30,8 @@ app.factory('Auth', function ($http, $state, $rootScope) {
 	// }
 
 	User.logout = function(){
-		console.log("user.logout")
+		console.log("inside User.logout")
 		$rootScope.currentUser = null;
-		
 		return $http.get('/logout')
 		.then(function(){
 			$state.go('home');
@@ -41,7 +39,7 @@ app.factory('Auth', function ($http, $state, $rootScope) {
 	}
 
 	User.fetchCurrentUser = function (){
-		console.log("in")
+		console.log("inside User.fetchCurrentUser")
 		return $http.get('/auth/me')
 		// .then(function(user){
 		// 	console.log("USER:", user)
